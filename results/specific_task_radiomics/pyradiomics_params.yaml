@@ -1,0 +1,40 @@
+featureClass:
+  firstorder:
+  - Mean
+  - Maximum
+  - StandardDeviation
+  - Entropy
+  - Skewness
+  glcm:
+  - Contrast
+  - Correlation
+  - Idm
+  - JointEntropy
+  - ClusterShade
+  glrlm:
+  - ShortRunEmphasis
+  - LongRunEmphasis
+  - RunPercentage
+  - GrayLevelNonUniformity
+  - RunEntropy
+  glszm:
+  - SmallAreaEmphasis
+  - LargeAreaEmphasis
+  - ZonePercentage
+  - GrayLevelNonUniformity
+  - ZoneEntropy
+  shape:
+  - Sphericity
+  - SurfaceVolumeRatio
+  - Maximum3DDiameter
+  - MeshVolume
+  - Elongation
+setting:
+  binWidth: 25
+  force2D: false
+  interpolator: sitkBSpline
+  label: 1
+  minimumROIDimensions: 1
+  minimumROISize: 1
+  normalize: false
+  resampledPixelSpacing: null
