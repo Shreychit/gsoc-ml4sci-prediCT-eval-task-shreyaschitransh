@@ -231,26 +231,3 @@ Silhouette score peaks at K=5 (0.378), Calinski-Harabasz at K=7. I went with sil
 ### Class Imbalance
 
 Zero-calcium scans make up 43% of the dataset. Without correction, a model would learn to predict "no calcium" and be right almost half the time. I used inverse-frequency weighted sampling for the training dataloader — rarer categories (Moderate, Severe) get sampled more often. Val/test stay unweighted to reflect real-world distribution.
-
----
-
-## Deliverables Checklist
-
-| Requirement | Status | Location |
-|---|---|---|
-| Pipeline code | ✅ | `notebooks/01_common_task_preprocessing.ipynb` |
-| Data loader | ✅ | `COCARadiomicsDataset` class in notebook 01 |
-| Written justification | ✅ | Markdown cells in notebook 01 + this README |
-| Dataset statistics | ✅ | Plots + tables in notebook 01 |
-| Feature extraction code | ✅ | `notebooks/02_specific_task_radiomics.ipynb` |
-| CSV with features | ✅ | `results/specific_task_radiomics/radiomics_features.csv` |
-| Spearman correlation + p-values | ✅ | `results/specific_task_radiomics/spearman_correlation.csv` |
-| Kruskal-Wallis + p-values | ✅ | `results/specific_task_radiomics/kruskal_wallis.csv` |
-| Correlation matrix | ✅ | `results/specific_task_radiomics/correlation_matrix.png` |
-| Significant associations (p<0.05) | ✅ | Multiple features at p < 0.0001 |
-| Visualizations | ✅ | 16 plots across both notebooks |
-| *Optional:* t-SNE/UMAP | ✅ | Both implemented |
-| *Optional:* Unsupervised clustering | ✅ | K-Means (K=5) + hierarchical dendrogram |
-| *Optional:* Phenotype characterization | ✅ | Crosstab + z-scored profiles |
-
----
