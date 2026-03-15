@@ -4,3 +4,4 @@ coca_project/
 .venv
 totalseg_masks/
 .DS_Store
+imagecas/
