@@ -14,7 +14,7 @@
 
 This repo contains my solutions for the PrediCT evaluation tasks — the common preprocessing task and Specific Task 1 (Heart Segmentation). The goal is to build a preprocessing pipeline for the Stanford COCA dataset and train a lightweight heart segmentation model that can replace TotalSegmentator for fast cardiac ROI extraction.
 
-The COCA dataset has 787 non-contrast cardiac CT scans with ground-truth calcium segmentation masks. I used TotalSegmentator to generate whole-heart masks on a subset of 51 scans, then trained a 2D U-Net to learn to predict those masks much faster.
+The COCA dataset has 787 non-contrast cardiac CT scans with ground-truth calcium segmentation masks. I used TotalSegmentator to generate whole-heart masks on a subset of 50 scans, then trained a 2D U-Net to learn to predict those masks much faster.
 
 ## Repo Structure
 
@@ -79,7 +79,7 @@ Run notebooks in order — `00_preprocessing.ipynb` first (generates `split.json
 | Total scans | 787 |
 | Calcium-positive | 447 (57%) |
 | Calcium-free | 340 (43%) |
-| TotalSeg masks generated | 51 (after removing 2 failed ones) |
+| TotalSeg masks generated | 50 (48 used in split after excluding 2 problematic scans) |
 
 ![Dataset Statistics](results/common_task/dataset_statistics.png)
 
@@ -108,7 +108,7 @@ Run notebooks in order — `00_preprocessing.ipynb` first (generates `split.json
 | TotalSegmentator time | ~30s/scan |
 | Speedup | ~9x |
 
-7 out of 8 test volumes scored above 0.90. One outlier (`e7e7ce26eb10`) scored 0.613 — this scan has an unusual field of view where the model hallucinates on black padding regions outside the body. Without this outlier the mean is ~0.95.
+7 out of 8 test volumes scored above 0.90. One outlier (`e7e7ce26eb10`) scored 0.613 — this scan has an unusual field of view where the model hallucinates on black padding regions outside the body. Without this outlier the mean is ~0.94.
 
 ![Training Curves](results/specific_task_1/training_curves.png)
 
@@ -122,7 +122,7 @@ Run notebooks in order — `00_preprocessing.ipynb` first (generates `split.json
 
 **2D vs 3D segmentation:** The biggest design decision. A 3D model would have full volumetric context and probably nail the boundary slices better — but it would also be slow, memory-heavy, and defeat the purpose of building something faster than TotalSegmentator. I went with 2D slices knowing I'd lose inter-slice context, and the results show this tradeoff clearly: the model is great on mid-heart slices but struggles at the superior/inferior edges where a single axial slice doesn't have enough information to distinguish heart from surrounding tissue. The ~9x speedup was worth it for a coarse localizer.
 
-**Training on only 51 scans:** This is a pretty small dataset. With ~6600 training slices after the slice-level extraction it worked out okay, but I had to be careful — aggressive augmentation would have been risky since the model could start memorizing patient-specific textures. I kept augmentation conservative (flips + rotations only) and relied on the DiceCE loss to regularize. More scans through TotalSegmentator would definitely help but each scan takes ~30s which adds up.
+**Training on only 48 scans:** This is a pretty small dataset. With ~6600 training slices after the slice-level extraction it worked out okay, but I had to be careful — aggressive augmentation would have been risky since the model could start memorizing patient-specific textures. I kept augmentation conservative (flips + rotations only) and relied on the DiceCE loss to regularize. More scans through TotalSegmentator would definitely help but each scan takes ~30s which adds up.
 
 **TotalSegmentator as ground truth:** This is an important caveat — I'm training my model to mimic TotalSegmentator, not to match some expert-annotated gold standard. TotalSegmentator itself isn't perfect, especially on non-contrast cardiac CT which isn't its strongest domain. So the Dice scores I report are "agreement with TotalSeg" rather than true anatomical accuracy. For the purpose of heart localization this is fine, but it's worth keeping in mind.
 
