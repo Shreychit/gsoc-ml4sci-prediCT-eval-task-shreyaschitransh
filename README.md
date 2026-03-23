@@ -47,11 +47,10 @@ The COCA dataset has 787 non-contrast cardiac CT scans with ground-truth calcium
 ## Setup
 
 ```bash
-git clone <repo-url>
-cd PrediCT-GSoC-Eval
-python -m venv .venv
+git clone https://github.com/Shreychit/gsoc-ml4sci-prediCT-eval-task-shreyaschitransh.git
+uv venv --python 3.13
 source .venv/bin/activate
-pip install torch monai nibabel pandas scikit-learn matplotlib seaborn
+uv pip install torch monai nibabel pandas scikit-learn matplotlib seaborn
 ```
 
 Download the COCA dataset following the [PrediCT GitHub instructions](https://github.com/KatyEB/PrediCT/tree/GSoC). Run the resampling scripts — you should end up with `coca_project/data_resampled/` containing NIfTI volumes at 0.7mm isotropic spacing.
